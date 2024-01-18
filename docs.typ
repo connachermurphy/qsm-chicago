@@ -10,7 +10,7 @@
   authors: (
     "Connacher Murphy",
   ),
-  date: "January 17, 2024",
+  date: "January 18, 2024",
 )
 
 #pad(x: 20%)[
@@ -169,3 +169,20 @@ Inspired by this representation, we define
 
 = Counterfactual Exercises
 `In progress.`
+
+== Local Productivity Shock
+#figure(caption: [Local Productivity Shock, Simple QSM, $hat(bold(A))$])[
+  #image("out/productivity_shock_A_hat.png", width: 50%)
+]
+
+#figure(caption: [Local Productivity Shock, Simple QSM, $hat(bold(w))$])[
+  #stack(
+    dir: ltr,
+    image("out/productivity_shock_w_hat.png", width: 50%),
+    image("out/productivity_shock_w_hat_censor.png", width: 50%)
+  )
+]
+
+#figure(caption: [Local Productivity Shock, Simple QSM, $hat(bold(w))$])[
+  #image("out/productivity_shock_w_hat_focus.png", width: 50%)
+]

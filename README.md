@@ -4,7 +4,7 @@ This repo is intended to demonstrate the basics of conducting economics research
 Extensive documentation is available [here](docs.pdf).
 
 To do:
-- [ ] QSM A counterfactual exercises
+- [x] QSM A counterfactual exercises
 - [ ] QSM A exposition
 - [ ] Initialize expanded QSM
 - [ ] Create .py file for common cleaning across 2 QSM versions
