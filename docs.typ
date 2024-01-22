@@ -328,27 +328,94 @@ We combine the expressions from above and define
 
 = Data and Calibration
 ```
-In progress.
+I will discuss the data and parameter choices used to generate the results below. The code to generate the data is available upon request and will be incorporated into a future version of this repository.
 ```
 
 = Counterfactual Exercises
 ```
-In progress.
+I plan to summarize equilibrium changes for a larger set of endogenous variables and a discussion of the differences between the two models.
 ```
 
-== Local Productivity Shock
-#figure(caption: [Local Productivity Shock, Simple QSM, $hat(bold(A))$])[
-  #image("out/productivity_shock_A_hat.png", width: 50%)
-]
+I compare the equilibrium impact of two parameter shocks: a 5% increase in productivity in the Far Southeast Side and a 5% reduction in commuting costs from the Far Southeast to Chicago's employment core (the Loop, Near North Side, and Near West Side). For interpretation, it is important to note that the $hat(bold(w))$ reports the changes in wages _paid_ to agents working in a given location.
 
-#figure(caption: [Local Productivity Shock, Simple QSM, $hat(bold(w))$])[
+== Local Productivity Shock
+I plot the proportional changes in productivity in @fig:prod. Productivity is unchanged outside of the Far Southeast.
+
+#figure(caption: [Local Productivity Shock, $hat(bold(A))$])[
+  #image("out/prod.png", width: 50%)
+]<fig:prod>
+
+#figure(caption: [Local Productivity Shock, $hat(bold(w))$])[
   #stack(
     dir: ltr,
-    image("out/productivity_shock_w_hat.png", width: 50%),
-    image("out/productivity_shock_w_hat_censor.png", width: 50%)
+    image("out/prod_mA_w_hat_all.png", width: 50%),
+    image("out/prod_mB_w_hat_all.png", width: 50%)
   )
 ]
 
-#figure(caption: [Local Productivity Shock, Simple QSM, $hat(bold(w))$])[
-  #image("out/productivity_shock_w_hat_focus.png", width: 50%)
+#figure(caption: [Local Productivity Shock, $hat(bold(w))$])[
+  #stack(
+    dir: ltr,
+    image("out/prod_mA_w_hat_excl.png", width: 50%),
+    image("out/prod_mB_w_hat_excl.png", width: 50%)
+  )
 ]
+
+#figure(caption: [Local Productivity Shock, $hat(bold(w))$])[
+  #stack(
+    dir: ltr,
+    image("out/prod_mA_w_hat_fse.png", width: 50%),
+    image("out/prod_mB_w_hat_fse.png", width: 50%)
+  )
+]
+
+== Local Productivity Shock
+I plot the proportional changes in commuting costs from the Far Southeast in @fig:trans. Commuting costs are unchanged outside of the Far Southeast.
+
+#figure(caption: [Commuting Cost Shock, $hat(bold(A))$])[
+  #image("out/trans.png", width: 50%)
+]<fig:trans>
+
+#figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
+  #stack(
+    dir: ltr,
+    image("out/trans_mA_w_hat_all.png", width: 50%),
+    image("out/trans_mB_w_hat_all.png", width: 50%)
+  )
+]
+
+#figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
+  #stack(
+    dir: ltr,
+    image("out/trans_mA_w_hat_excl.png", width: 50%),
+    image("out/trans_mB_w_hat_excl.png", width: 50%)
+  )
+]
+
+#figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
+  #stack(
+    dir: ltr,
+    image("out/trans_mA_w_hat_fse.png", width: 50%),
+    image("out/trans_mB_w_hat_fse.png", width: 50%)
+  )
+]
+
+#figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
+  #stack(
+    dir: ltr,
+    image("out/trans_mA_w_hat_core.png", width: 50%),
+    image("out/trans_mB_w_hat_core.png", width: 50%)
+  )
+]
+
+// #figure(caption: [Local Productivity Shock, Simple QSM, $hat(bold(w))$])[
+//   #stack(
+//     dir: ltr,
+//     image("out/productivity_shock_w_hat.png", width: 50%),
+//     image("out/productivity_shock_w_hat_censor.png", width: 50%)
+//   )
+// ]
+
+// #figure(caption: [Local Productivity Shock, Simple QSM, $hat(bold(w))$])[
+//   #image("out/productivity_shock_w_hat_focus.png", width: 50%)
+// ]
