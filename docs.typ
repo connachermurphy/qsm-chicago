@@ -53,6 +53,8 @@ This repo is intended to demonstrate the basics of conducting economics research
 In progress.
 ```
 
+The models presented below might strike you as restrictive and unrealistic. I have opted for an especially simple pair of models to demonstrate the basic mechanics of quantitative spatial models. This document will hopefully make the richer models of the literature more accessible. All quantitative spatial models (indeed, all economic models) necessarily abstract from certain features of reality. Results must always be interpreted in light of a researcher's modeling choices and the appropriateness of these choices for the research question.
+
 // CM: note lack of housing market (and residential choice)
 // CM: citations (will include greater detail)
 
@@ -91,20 +93,21 @@ Pending a citation on discrete choice magic.
 // CM: change all equation references to mX- standard
 
 === Firms
-```
-This section currently omits some details concerning market structure. I will add a discussion for the sake of completeness, but the equilibrium characterization will not change.
-```
-
-A unit mass of firms in each neighborhood produce a freely traded final good with the technology
+A unit mass of perfectly competitive firms in each neighborhood produce a freely traded final good priced at $1$ with the technology
   $
-    Y_n = A_n L_n^beta
+    Y_n = tilde(A)_n L_n^beta K_n^(1 - beta),
   $
-and pay workers their marginal product.#footnote[Again, I omit details of market structure for parsimony. I do not explicitly model trade in goods.] The price of the final good is $1$. Accordingly, the wage and labor demand in neighborhood $n$ are given by
+where $tilde(A)_n$ is a productivity parameter, $L_n$ is labor input, and $K_n$ is capital input. We assume that each neighborhood has a fixed stock of immobile capital $overline(K)_n$, so it suffices to consider the production function
+  $
+    Y_n = A_n L_n^beta,
+  $
+where $A_n = tilde(A)_n overline(K)_n^(1 - beta)$. These perfectly competitive firms will pay workers their marginal product; wage and labor demand in neighborhood $n$ are given by
   $
     w_n &= beta A_n L_n^(beta - 1) \
     arrow.r.double.long
     L_n &= ((beta A_n) / w_n)^(1 / (1 - beta)).
   $<eqn:mA-wages>
+We assume that capital owners spend all their rental income locally so that goods market clearing still holds. This model shuts down a potentially important margin of adjustment: changing capital stocks. Again, results must always be interpreted in light of such modeling choices and their appropriateness for the research question.
 
 === Commuting Equilibrium
 For the commuting market to clear, labor demand in location $n$ must equal labor supply to location $n$ across all residential locations $i$:
@@ -118,7 +121,7 @@ We can substitute @eqn:commute-probability and @eqn:mA-wages into this expressio
   $<eqn:commuting-equilibrium>
 
 ```
-This section does not discuss the existence and uniqueness of the equilibrium, nor does it discuss welfare. I will add sections on these topics in the future.
+This section does not discuss the existence and uniqueness of the equilibrium, nor does it discuss welfare. I will add sections on these topics in the future. As a note of caution, we cannot compare welfare between the two models, given the different utility functions.
 ```
 
 // CM: add welfare
@@ -132,8 +135,8 @@ We consider a baseline equilibrium ${bold(w)^0, bold(pi)^0}$ for parameters ${bo
   $
 This representation leads us to "exact hat algebra," a popular method to model and summarize counterfactual equilibria. We start by expressing the market clearing condition for the counterfactual equilibrium and then substitute in @eqn:mA-wages:
 $
-  L_n^0 hat(L)_n &= (sum_(i in cal(L)) (pi_(i n)^0 R_i^0) (hat(pi)_(i n) hat(R)_i)) \
-  arrow.r.double.long ((hat(A)_n) / hat(w)_n)^(1 / (1 - beta)) &= (sum_(i in cal(L)) (pi_(i n)^0 R_i^0) (hat(pi)_(i n) hat(R)_i)) / L_n^0.
+  L_n^0 hat(L)_n &= (sum_(i in cal(L)) (pi_(i n | i)^0 R_i^0) (hat(pi)_(i n | i) hat(R)_i)) \
+  arrow.r.double.long ((hat(A)_n) / hat(w)_n)^(1 / (1 - beta)) &= (sum_(i in cal(L)) (pi_(i n | i)^0 R_i^0) (hat(pi)_(i n | i) hat(R)_i)) / L_n^0.
 $<eqn:exact-hat-clearing>
 We can use @eqn:commute-probability to write
   $
@@ -142,7 +145,7 @@ We can use @eqn:commute-probability to write
     "where"quad hat(phi)_(i n)
     &eq.def (hat(w)_n / hat(kappa)_(i n))^(theta) \
     "and" hat(Phi)_i
-    &eq.def sum_(k in cal(L)) pi_(i k)^(0) hat(phi)_(i k)
+    &eq.def sum_(k in cal(L)) pi_(i k | i)^(0) hat(phi)_(i k)
   $<eqn:exact-hat-pi>
 The substantive piece of this expression is $hat(Phi)_i$. We derive it below:
   $
@@ -164,17 +167,17 @@ The substantive piece of this expression is $hat(Phi)_i$. We derive it below:
     )
     = sum_(k in cal(L)) text(
       fill: #red,
-      pi_(i k)^(0)
+      pi_(i k | i)^(0)
     )
     hat(phi)_(i k),
   $
-where we have used @eqn:commute-probability to substitute in for $pi_(i k)^(0)$ (see the portions colored #text(red)[red]). We now combine @eqn:exact-hat-clearing and @eqn:exact-hat-pi to obtain
+where we have used @eqn:commute-probability to substitute in for $pi_(i k | i)^(0)$ (see the portions colored #text(red)[red]). We now combine @eqn:exact-hat-clearing and @eqn:exact-hat-pi to obtain
   $
     ((hat(A)_n) / hat(w)_n)^(1 / (1 - beta))
     &= [
       sum_(i in cal(L))
-      (pi_(i n)^0 R_i^0 hat(R)_i (hat(w)_n slash hat(kappa)_(i n))^(theta)) /
-      (sum_(k in cal(L)) pi_(i k)^(0) (hat(w)_k slash hat(kappa)_(i k))^(theta))
+      (pi_(i n | i)^0 R_i^0 hat(R)_i (hat(w)_n slash hat(kappa)_(i n))^(theta)) /
+      (sum_(k in cal(L)) pi_(i k | i)^(0) (hat(w)_k slash hat(kappa)_(i k))^(theta))
     ] 1 / L_n^0.
   $<eqn:exact-hat-combined>
 What does this characterization of a counterfactual equilibria buy us? If we express a counterfactual as a set of proportional changes to the parameter values ${hat(bold(A)), hat(bold(kappa)), hat(bold(R))}$, then we only need data on initial conditional commuting probabilities $bold(pi)^0$, workplace population $bold(L)^0$, and residential population $bold(R)^0$ to solve for the proportional changes in wages $hat(bold(w))$ (using @eqn:exact-hat-combined) and conditional commuting probabilities $hat(bold(pi))$ (using @eqn:exact-hat-pi).
@@ -183,11 +186,11 @@ Inspired by this representation, we define
   $
     cal(Z)_(n)(tilde(bold(w)))
     eq.def
-    ((hat(A)_n) / tilde(w)_n)^(1 / (1 - alpha))
+    ((hat(A)_n) / tilde(w)_n)^(1 / (1 - beta))
     - [
       sum_(i in cal(L))
-      (pi_(i n)^0 R_i^0 hat(R)_i (tilde(w)_n slash hat(kappa)_(i n))^(theta)) /
-      (sum_(k in cal(L)) pi_(i k)^(0) (tilde(w)_k slash hat(kappa)_(i k))^(theta))
+      (pi_(i n | i)^0 R_i^0 hat(R)_i (tilde(w)_n slash hat(kappa)_(i n))^(theta)) /
+      (sum_(k in cal(L)) pi_(i k | i)^(0) (tilde(w)_k slash hat(kappa)_(i k))^(theta))
     ] 1 / L_n^0.
   $
 
@@ -205,6 +208,10 @@ We can use this vector-valued function $bold(cal(Z))(tilde(bold(w)))$ to compute
   + *end while*
   + *return* $tilde(bold(w))^s$
 ]
+
+```
+It would be appropriate to discuss zero flows here. I will do so in the future.
+```
 
 // CM: add a discussion of zero flows
 
@@ -256,9 +263,9 @@ Land market clearing implies that housing expenditure (given by utility maximiza
 === Firms
 We maintain the same set of assumptions on the firm side as in Model A. This yields the wage equation and labor demand
   $
-    w_n &= alpha A_n L_n^(alpha - 1) \
+    w_n &= beta A_n L_n^(beta - 1) \
     arrow.r.double.long
-    L_n &= ((alpha A_n) / w_n)^(1 / (1 - alpha)).
+    L_n &= ((beta A_n) / w_n)^(1 / (1 - beta)).
   $<eqn:mB-wages>
 
   
