@@ -53,7 +53,7 @@ This repo is intended to demonstrate the basics of conducting economics research
 In progress.
 ```
 
-The models presented below might strike you as restrictive and unrealistic. I have opted for an especially simple pair of models to demonstrate the basic mechanics of quantitative spatial models. This document will hopefully make the richer models of the literature more accessible. All quantitative spatial models (indeed, all economic models) necessarily abstract from certain features of reality. Results must always be interpreted in light of a researcher's modeling choices and the appropriateness of these choices for the research question.
+The models presented below might strike you as restrictive and unrealistic. I have opted for an especially simple pair of models to demonstrate the basic mechanics of quantitative spatial models. This document will hopefully make the richer models of the literature more accessible. All quantitative spatial models (indeed, all economic models) necessarily abstract from certain features of reality. Results must always be interpreted in light of a researcher's modeling choices and the appropriateness of these choices for the research question at hand.
 
 // CM: note lack of housing market (and residential choice)
 // CM: citations (will include greater detail)
@@ -65,7 +65,7 @@ I begin with a simple model of commuting to demonstrate the basic mechanics of a
 Chicago is comprised of discrete neighborhoods $i, n, k, l in cal(L)$. Each location $i$ has a fixed mass $R_i$ of residents.
 
 === Workers
-Each agent inelastically supplies one unit of labor. An agent $omega$ residing in location $i$ and working in location $n$ receives indirect#footnote[I omit the subproblem of utility maximization given location choice for parsimony. Model B will explicitly discuss this subproblem, which nests the subproblem of utility maximization in this model.] utility $cal(U)_(n i)$, where
+Each agent inelastically supplies one unit of labor. An agent $omega$ residing in location $i$ and working in location $n$ receives indirect#footnote[I omit the subproblem of utility maximization given location choice for parsimony. Model B will explicitly discuss this subproblem, which nests the subproblem of utility maximization in this model. We can set $alpha = 1$ to see the equivalence.] utility $cal(U)_(n i)$, where
   $
     cal(U)_(i n omega) &= (w_n / kappa_(i n)) b_(i n omega).
   $
@@ -107,7 +107,7 @@ where $A_n = tilde(A)_n overline(K)_n^(1 - beta)$. These perfectly competitive f
     arrow.r.double.long
     L_n &= ((beta A_n) / w_n)^(1 / (1 - beta)).
   $<eqn:mA-wages>
-We assume that capital owners spend all their rental income locally so that goods market clearing still holds. This model shuts down a potentially important margin of adjustment: changing capital stocks. Again, results must always be interpreted in light of such modeling choices and their appropriateness for the research question.
+We assume that capital owners spend all their rental income in the city so that goods market clearing still holds. This model shuts down a potentially important margin of adjustment: changing capital stocks. We could also consider firms that compete in the same land markets as residents (we introduce a residential land market in model B). Again, results must always be interpreted in light of such modeling choices and their appropriateness for the research question.
 
 === Commuting Equilibrium
 For the commuting market to clear, labor demand in location $n$ must equal labor supply to location $n$ across all residential locations $i$:
@@ -346,74 +346,74 @@ I plan to summarize equilibrium changes for a larger set of endogenous variables
 I compare the equilibrium impact of two parameter shocks: a 5% increase in productivity in the Far Southeast Side and a 5% reduction in commuting costs from the Far Southeast to Chicago's employment core (the Loop, Near North Side, and Near West Side). For interpretation, it is important to note that the $hat(bold(w))$ reports the changes in wages _paid_ to agents working in a given location.
 
 == Local Productivity Shock
-I plot the proportional changes in productivity in @fig:prod. Productivity is unchanged outside of the Far Southeast.
+// I plot the proportional changes in productivity in @fig:prod. Productivity is unchanged outside of the Far Southeast.
 
-#figure(caption: [Local Productivity Shock, $hat(bold(A))$])[
-  #image("out/prod.png", width: 50%)
-]<fig:prod>
+// #figure(caption: [Local Productivity Shock, $hat(bold(A))$])[
+//   #image("out/prod.png", width: 50%)
+// ]<fig:prod>
 
-#figure(caption: [Local Productivity Shock, $hat(bold(w))$])[
-  #stack(
-    dir: ltr,
-    image("out/prod_mA_w_hat_all.png", width: 50%),
-    image("out/prod_mB_w_hat_all.png", width: 50%)
-  )
-]
+// #figure(caption: [Local Productivity Shock, $hat(bold(w))$])[
+//   #stack(
+//     dir: ltr,
+//     image("out/prod_mA_w_hat_all.png", width: 50%),
+//     image("out/prod_mB_w_hat_all.png", width: 50%)
+//   )
+// ]
 
-#figure(caption: [Local Productivity Shock, $hat(bold(w))$])[
-  #stack(
-    dir: ltr,
-    image("out/prod_mA_w_hat_excl.png", width: 50%),
-    image("out/prod_mB_w_hat_excl.png", width: 50%)
-  )
-]
+// #figure(caption: [Local Productivity Shock, $hat(bold(w))$])[
+//   #stack(
+//     dir: ltr,
+//     image("out/prod_mA_w_hat_excl.png", width: 50%),
+//     image("out/prod_mB_w_hat_excl.png", width: 50%)
+//   )
+// ]
 
-#figure(caption: [Local Productivity Shock, $hat(bold(w))$])[
-  #stack(
-    dir: ltr,
-    image("out/prod_mA_w_hat_fse.png", width: 50%),
-    image("out/prod_mB_w_hat_fse.png", width: 50%)
-  )
-]
+// #figure(caption: [Local Productivity Shock, $hat(bold(w))$])[
+//   #stack(
+//     dir: ltr,
+//     image("out/prod_mA_w_hat_fse.png", width: 50%),
+//     image("out/prod_mB_w_hat_fse.png", width: 50%)
+//   )
+// ]
 
 == Local Productivity Shock
-I plot the proportional changes in commuting costs from the Far Southeast in @fig:trans. Commuting costs are unchanged outside of the Far Southeast.
+// I plot the proportional changes in commuting costs from the Far Southeast in @fig:trans. Commuting costs are unchanged outside of the Far Southeast.
 
-#figure(caption: [Commuting Cost Shock, $hat(bold(A))$])[
-  #image("out/trans.png", width: 50%)
-]<fig:trans>
+// #figure(caption: [Commuting Cost Shock, $hat(bold(A))$])[
+//   #image("out/trans.png", width: 50%)
+// ]<fig:trans>
 
-#figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
-  #stack(
-    dir: ltr,
-    image("out/trans_mA_w_hat_all.png", width: 50%),
-    image("out/trans_mB_w_hat_all.png", width: 50%)
-  )
-]
+// #figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
+//   #stack(
+//     dir: ltr,
+//     image("out/trans_mA_w_hat_all.png", width: 50%),
+//     image("out/trans_mB_w_hat_all.png", width: 50%)
+//   )
+// ]
 
-#figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
-  #stack(
-    dir: ltr,
-    image("out/trans_mA_w_hat_excl.png", width: 50%),
-    image("out/trans_mB_w_hat_excl.png", width: 50%)
-  )
-]
+// #figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
+//   #stack(
+//     dir: ltr,
+//     image("out/trans_mA_w_hat_excl.png", width: 50%),
+//     image("out/trans_mB_w_hat_excl.png", width: 50%)
+//   )
+// ]
 
-#figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
-  #stack(
-    dir: ltr,
-    image("out/trans_mA_w_hat_fse.png", width: 50%),
-    image("out/trans_mB_w_hat_fse.png", width: 50%)
-  )
-]
+// #figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
+//   #stack(
+//     dir: ltr,
+//     image("out/trans_mA_w_hat_fse.png", width: 50%),
+//     image("out/trans_mB_w_hat_fse.png", width: 50%)
+//   )
+// ]
 
-#figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
-  #stack(
-    dir: ltr,
-    image("out/trans_mA_w_hat_core.png", width: 50%),
-    image("out/trans_mB_w_hat_core.png", width: 50%)
-  )
-]
+// #figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
+//   #stack(
+//     dir: ltr,
+//     image("out/trans_mA_w_hat_core.png", width: 50%),
+//     image("out/trans_mB_w_hat_core.png", width: 50%)
+//   )
+// ]
 
 // #figure(caption: [Local Productivity Shock, Simple QSM, $hat(bold(w))$])[
 //   #stack(
