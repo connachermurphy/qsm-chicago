@@ -194,7 +194,7 @@ Inspired by this representation, we define
     ] 1 / L_n^0.
   $
 
-We can use this vector-valued function $bold(cal(Z))(tilde(bold(w)))$ to compute the proportional changes in wages (and other equilibrium objects) in counterfactual equilibria. I provide pseudocode for this procedure below. I implement the algorithm in `analysis/model_A.ipynb`.
+We can use this vector-valued function $bold(cal(Z))(tilde(bold(w)))$ to compute the proportional changes in wages (and other equilibrium objects) in counterfactual equilibria. I provide pseudocode for this procedure below. I implement the algorithm in `analysis/qsm_implementation.ipynb`.
 
 #stylebox[
   *Model A Algorithm:*

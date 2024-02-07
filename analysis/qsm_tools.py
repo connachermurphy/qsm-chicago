@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import geopandas as gpd
+import matplotlib.pyplot as plt
 
 
 def calibrate():
@@ -68,3 +69,21 @@ def calibrate():
         alpha,
         beta,
     )
+
+
+def map(shp, var, vmin, vmax, title, filename):
+    shp.plot(
+        column=var,
+        legend=True,
+        edgecolor="lightslategray",
+        linewidth=0.5,
+        vmin=vmin,
+        vmax=vmax,
+        cmap="inferno",
+    )
+    plt.xticks([])
+    plt.yticks([])
+    plt.title(title)
+    plt.tight_layout(pad=0)
+    plt.savefig(f"../out/{filename}.png", bbox_inches="tight")
+    plt.show()
