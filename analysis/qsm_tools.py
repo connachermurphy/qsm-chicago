@@ -79,7 +79,8 @@ def map(shp, var, vmin, vmax, title, filename):
         linewidth=0.5,
         vmin=vmin,
         vmax=vmax,
-        cmap="inferno",
+        cmap="cividis",
+        # cmap="inferno",
     )
     plt.xticks([])
     plt.yticks([])
@@ -87,3 +88,13 @@ def map(shp, var, vmin, vmax, title, filename):
     plt.tight_layout(pad=0)
     plt.savefig(f"../out/{filename}.png", bbox_inches="tight")
     plt.show()
+
+
+def compare_maps(shp_list, var, panel_titles, filenames):
+    # Find bounds
+    vmin = min(shp["w_hat"].min() for shp in shp_list)
+    vmax = min(shp["w_hat"].max() for shp in shp_list)
+
+    # Create maps
+    for i in range(len(shp_list)):
+        map(shp_list[i], var, vmin, vmax, panel_titles[i], f"{var}_{filenames[i]}")
