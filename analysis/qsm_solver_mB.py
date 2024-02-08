@@ -196,9 +196,9 @@ def calc_Z(
         H_hat: housing stock changes
     """
 
-    demand_term = np.power(A_hat / w_tilde, 1 / (1 - beta))
+    L_hat_demand = np.power(A_hat / w_tilde, 1 / (1 - beta))
 
-    supply_term = calc_L_hat_supply(
+    L_hat_supply = calc_L_hat_supply(
         theta,
         alpha,
         pi_init,
@@ -211,7 +211,7 @@ def calc_Z(
         R_bar_hat,
     )
 
-    return demand_term - supply_term
+    return L_hat_demand - L_hat_supply
 
 
 def solve_counterfactual(
@@ -291,12 +291,26 @@ def solve_counterfactual(
     return w_tilde, q_tilde
 
 
-def summarize_counterfactual(num_nbhd, neighborhoods_shp, w_hat, q_hat):
+def summarize_counterfactual(num_nbhd, neighborhoods_shp, w_hat, q_hat, theta, alpha, pi_init, L_init, R_init, R_bar_init, kappa_hat, B_hat, R_bar_hat):
+    L_hat = calc_L_hat_supply(theta,
+        alpha,
+        pi_init,
+        L_init,
+        R_bar_init,
+        w_hat,
+        q_hat,
+        kappa_hat,
+        B_hat,
+        R_bar_hat,
+    )
+
+    R_hat = calc_R_hat(theta, alpha, pi_init, R_init, R_bar_init, w_hat, q_hat, kappa_hat, B_hat, R_bar_hat)
+
     df_hat = pd.DataFrame(  # stack wage and productivity changes into df
         np.column_stack(
-            (w_hat.reshape((num_nbhd)), q_hat.reshape((num_nbhd)))
+            (w_hat.reshape((num_nbhd)), q_hat.reshape((num_nbhd)), L_hat.reshape((num_nbhd)), R_hat.reshape((num_nbhd)))
         ),
-        columns=["w_hat", "q_hat"],
+        columns=["w_hat", "q_hat", "L_hat", "R_hat"],
     )
 
     df_hat["id"] = df_hat.index + 1

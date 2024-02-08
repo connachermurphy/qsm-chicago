@@ -18,7 +18,7 @@
   authors: (
     "Connacher Murphy",
   ),
-  date: "January 22, 2024",
+  date: datetime.today().display("[month repr:long] [day], [year]"),
 )
 
 #align(center)[
@@ -46,20 +46,15 @@
   *Abstract*
 ]
 
-This repo is intended to demonstrate the basics of conducting economics research with quantitative spatial models. I derive and calibrate a simple quantitative spatial model of Chicago and conduct two counterfactual exercises. I then repeat this process for a richer model and compare the results.
+This repository demonstrates the basics of conducting economics research with quantitative spatial models (QSMs). I derive and calibrate a simple quantitative spatial model of Chicago and conduct two counterfactual exercises. I then repeat this process for a richer model and compare the results. This exercise is intended for pedagogical purposes. To this end, the models below are simplified versions of QSMs commonly used in economics research. I welcome any comments and questions.
 
 = Introduction
-```
-In progress.
-```
-
 The models presented below might strike you as restrictive and unrealistic. I have opted for an especially simple pair of models to demonstrate the basic mechanics of quantitative spatial models. This document will hopefully make the richer models of the literature more accessible. All quantitative spatial models (indeed, all economic models) necessarily abstract from certain features of reality. Results must always be interpreted in light of a researcher's modeling choices and the appropriateness of these choices for the research question at hand.
 
-// CM: note lack of housing market (and residential choice)
-// CM: citations (will include greater detail)
+#cite(<ahlfeldt_ea_2015>, form: "prose") and #cite(<monte_ea_2018>, form: "prose") are popular examples of such models and provide a good introduction to the literature. #cite(<redding_rossi-hansberg_2017>, form: "prose") review the literature and common components of economic geography models. Models of economic geography often draw from the seminal work of #cite(<eaton_kortum_2002>, form: "prose") in international trade.
 
 = Model
-I begin with a simple model of commuting to demonstrate the basic mechanics of a common form of quantitative spatial model. I then extend this model to include other relevant features of the economy.
+I begin with a simple model of commuting to demonstrate the basic mechanics of a common form of QSM. I then extend this model to include (some) other relevant features of a spatial economy.
 
 == A Simple Model (Model A)
 Chicago is comprised of discrete neighborhoods $i, n, k, l in cal(L)$. Each location $i$ has a fixed mass $R_i$ of residents.
@@ -69,7 +64,7 @@ Each agent inelastically supplies one unit of labor. An agent $omega$ residing i
   $
     cal(U)_(i n omega) &= (w_n / kappa_(i n)) b_(i n omega).
   $
-$w_n$ is the wage paid in location $n$. $kappa_(i n)$ is a commuting cost of the iceberg form in the units of utility. $b_(i n omega)$ is an idiosyncratic preference shock with a Fréchet distribution. The cumulative distribution function of $b_(i n omega)$ is given by $F_(i n)(b_(i n omega)) = exp(b_(i n omega)^(-theta))$. $theta$ governs the dispersion of this preference shock.
+$w_n$ is the wage paid in location $n$. $kappa_(i n)$ is a commuting cost of the iceberg form in the units of utility. $b_(i n omega)$ is an idiosyncratic preference shock with a Fréchet distribution. The cumulative distribution function of $b_(i n omega)$ is given by $F_(i n)(b_(i n omega)) = exp(-b_(i n omega)^(-theta))$. $theta$ governs the dispersion of this preference shock.
 
 A worker $omega$ in location $i$ chooses the workplace that maximizes their indirect utility:
   $
@@ -85,9 +80,8 @@ Since workers differ only in their draws of ${b_(i n omega)}_(i, n in cal(L))$ o
     &eq.def sum_(k in cal(L)) phi_(i k).
   $<eqn:commute-probability>
 
-```
-Pending a citation on discrete choice magic.
-```
+#cite(<train_2003>, form: "prose"), especially the first three chapters, is an excellent resource on discrete choice models. If you are unfamiliar with the result in @eqn:commute-probability, I recommend starting there. You can access the book at #link("https://eml.berkeley.edu/books/choice2.html")[https://eml.berkeley.edu/books/choice2.html].#footnote[I welcome your feedback. Would it be useful to include the derivation of @eqn:commute-probability here?]
+
 // CM: add a discrete choice citation
 
 // CM: change all equation references to mX- standard
@@ -121,11 +115,40 @@ We can substitute @eqn:commute-probability and @eqn:mA-wages into this expressio
   $<eqn:commuting-equilibrium>
 
 ```
-This section does not discuss the existence and uniqueness of the equilibrium, nor does it discuss welfare. I will add sections on these topics in the future. As a note of caution, we cannot compare welfare between the two models, given the different utility functions.
+This section does not discuss the existence and uniqueness of the equilibrium. I will add sections on these topics in the future. As a note of caution, we cannot compare welfare between the two models, given the different utility functions.
 ```
 
 // CM: add welfare
 // CM: existence and uniqueness
+
+=== Welfare
+We can compute expected utility by considering indirect utility. Expected utility for an agent residing in location $i$ will be given by the expected utility in their most attractive workplace:
+$
+  EE[cal(U)_(i n^*_(i omega) omega)]
+  = sum_n pi_(i n | i) EE[cal(U)_(i n omega) | n^*_(i omega) = n],
+$
+where we have used the law of iterated expectations. In order to compute this expectation, we need the distribution of $cal(U)_(i n omega)$ conditional on $n^*_(i omega) = n$. We derive this distribution below:
+$
+  PP {cal(U)_(i n omega) < u | n^*_(i omega) = n}
+  &= (PP {cal(U)_(i n omega) < u and n^*_(i omega) = n})
+  / (PP {n^*_(i omega) = n}) \
+  &= 1 / pi_(i n | i) PP {b_(i n omega) < u (kappa_(i n) / w_n) and n^*_(i omega) = n} \
+  &= 1 / pi_(i n | i) integral_0^(u (kappa_(i n) / w_n)) product_(k != n) F_(i k)(w_(i n) / kappa_(i n) kappa_(i k) / w_(i k)  b) d F_(i n)(b) \
+  &= 1 / pi_(i n | i) integral_0^(u (kappa_(i n) / w_n)) product_(k) F_(i k)(w_(i n) / kappa_(i n) kappa_(i k) / w_(i k)  b) theta b^(-theta - 1) d b \
+  &= 1 / pi_(i n | i) integral_0^(u (kappa_(i n) / w_n)) exp (-sum_(k) (w_(i n) / kappa_(i n) kappa_(i k) / w_(i k)  b)^(-theta)) theta b^(-theta - 1) d b \
+  &= 1 / pi_(i n | i) integral_0^(u (kappa_(i n) / w_n)) exp (-pi_(i n | i)^(-1) b^(-theta)) theta b^(-theta - 1) d b \
+  &= 1 / pi_(i n | i) integral_0^(u (kappa_(i n) / w_n)) exp (-pi_(i n | i)^(-1) b^(-theta)) theta b^(-theta - 1) d b \
+  &= 1 / pi_(i n | i) [pi_(i n | i) exp(-pi_(i n | i)^(-1) b^(-theta)) |_0^(u(kappa_(i n) / w_n))]  \
+  &= exp(-Phi_i u^(-theta)),
+$
+which is a Fréchet distribution with shape $theta$ and scale parameter $Phi_i^(1 / theta)$; this result is part of the Fréchet magic! We can then use the expression for the mean of a Fréchet distribution to compute the expected utility of an agent residing in location $i$:
+$
+  EE[cal(U)_(i n^*_(i omega) omega)]
+  &= sum_n pi_(i n | i) EE[cal(U)_(i n omega) | n^*_(i omega) = n] \
+  &= sum_n pi_(i n | i) [Gamma(1 - 1 / theta) Phi_i^(1 / theta)] \
+  &= Gamma(1 - 1 / theta) Phi_i^(1 / theta).
+$
+These derivations are used widely across the literature and usually relegated to an appendix or omitted entirely. Researchers will appeal to the standard results from discrete choice, as the steps are usually similar or identical across models. I would encourage you to derive these results yourself once or twice before appealing to the standard results.#footnote[Are any of the steps above unclear? Please let me know and I can add more exposition.]
 
 === Counterfactual Equilibria
 I will denote the vector-collection of a variable $x_i$ over all locations with boldface: ${x_i}_(i in cal(L)) eq.def bold(x)$.
@@ -166,7 +189,7 @@ The substantive piece of this expression is $hat(Phi)_i$. We derive it below:
       )
     )
     = sum_(k in cal(L)) text(
-      fill: #red,
+       fill: #red,
       pi_(i k | i)^(0)
     )
     hat(phi)_(i k),
@@ -345,84 +368,122 @@ I plan to summarize equilibrium changes for a larger set of endogenous variables
 
 I compare the equilibrium impact of two parameter shocks: a 5% increase in productivity in the Far Southeast Side and a 5% reduction in commuting costs from the Far Southeast to Chicago's employment core (the Loop, Near North Side, and Near West Side). For interpretation, it is important to note that the $hat(bold(w))$ reports the changes in wages _paid_ to agents working in a given location.
 
-== Local Productivity Shock
-// I plot the proportional changes in productivity in @fig:prod. Productivity is unchanged outside of the Far Southeast.
+#figure(caption: [Impacted Neighborhoods])[
+  #image("out/shock_map.png", width: 50%)
+]<fig:shock-map>
 
-// #figure(caption: [Local Productivity Shock, $hat(bold(A))$])[
-//   #image("out/prod.png", width: 50%)
-// ]<fig:prod>
+== Wages
+#figure(caption: [$hat(bold(w))$])[
+  #stack(
+    dir: ltr,
+    image("out/w_hat_prod_mA.png", width: 50%),
+    image("out/w_hat_prod_mB.png", width: 50%),
+  )
+  #stack(
+    dir: ltr,
+    image("out/w_hat_trans_mA.png", width: 50%),
+    image("out/w_hat_trans_mB.png", width: 50%),
+  )
+]<fig:w-hat>
 
-// #figure(caption: [Local Productivity Shock, $hat(bold(w))$])[
-//   #stack(
-//     dir: ltr,
-//     image("out/prod_mA_w_hat_all.png", width: 50%),
-//     image("out/prod_mB_w_hat_all.png", width: 50%)
-//   )
-// ]
+#figure(caption: [$hat(bold(w))$])[
+  #stack(
+    dir: ltr,
+    image("out/w_hat_prod_mA_exclude.png", width: 50%),
+    image("out/w_hat_prod_mB_exclude.png", width: 50%),
+  )
+  #stack(
+    dir: ltr,
+    image("out/w_hat_trans_mA_exclude.png", width: 50%),
+    image("out/w_hat_trans_mB_exclude.png", width: 50%),
+  )
+]<fig:w-hat-exclude>
 
-// #figure(caption: [Local Productivity Shock, $hat(bold(w))$])[
-//   #stack(
-//     dir: ltr,
-//     image("out/prod_mA_w_hat_excl.png", width: 50%),
-//     image("out/prod_mB_w_hat_excl.png", width: 50%)
-//   )
-// ]
+== Rents
+#figure(caption: [$hat(bold(q))$])[
+  #stack(
+    dir: ltr,
+    image("out/q_hat_prod_mB.png", width: 50%),
+    image("out/q_hat_trans_mB.png", width: 50%),
+  )
+]<fig:q-hat>
 
-// #figure(caption: [Local Productivity Shock, $hat(bold(w))$])[
-//   #stack(
-//     dir: ltr,
-//     image("out/prod_mA_w_hat_fse.png", width: 50%),
-//     image("out/prod_mB_w_hat_fse.png", width: 50%)
-//   )
-// ]
+#figure(caption: [$hat(bold(q))$])[
+  #stack(
+    dir: ltr,
+    image("out/q_hat_prod_mB_exclude.png", width: 50%),
+    image("out/q_hat_trans_mB_exclude.png", width: 50%),
+  )
+]<fig:q-hat-exclude>
 
-== Local Productivity Shock
-// I plot the proportional changes in commuting costs from the Far Southeast in @fig:trans. Commuting costs are unchanged outside of the Far Southeast.
+== Labor Supply
+#figure(caption: [$hat(bold(L))$])[
+  #stack(
+    dir: ltr,
+    image("out/L_hat_prod_mA.png", width: 50%),
+    image("out/L_hat_prod_mB.png", width: 50%),
+  )
+  #stack(
+    dir: ltr,
+    image("out/L_hat_trans_mA.png", width: 50%),
+    image("out/L_hat_trans_mB.png", width: 50%),
+  )
+]<fig:L-hat>
 
-// #figure(caption: [Commuting Cost Shock, $hat(bold(A))$])[
-//   #image("out/trans.png", width: 50%)
-// ]<fig:trans>
+#figure(caption: [$hat(bold(L))$])[
+  #stack(
+    dir: ltr,
+    image("out/L_hat_prod_mA_exclude.png", width: 50%),
+    image("out/L_hat_prod_mB_exclude.png", width: 50%),
+  )
+  #stack(
+    dir: ltr,
+    image("out/L_hat_trans_mA_exclude.png", width: 50%),
+    image("out/L_hat_trans_mB_exclude.png", width: 50%),
+  )
+]<fig:L-hat-exclude>
 
-// #figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
-//   #stack(
-//     dir: ltr,
-//     image("out/trans_mA_w_hat_all.png", width: 50%),
-//     image("out/trans_mB_w_hat_all.png", width: 50%)
-//   )
-// ]
+== Residential Population
+#figure(caption: [$hat(bold(R))$])[
+  #stack(
+    dir: ltr,
+    image("out/R_hat_prod_mB.png", width: 50%),
+    image("out/R_hat_trans_mB.png", width: 50%),
+  )
+]<fig:q-hat>
 
-// #figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
-//   #stack(
-//     dir: ltr,
-//     image("out/trans_mA_w_hat_excl.png", width: 50%),
-//     image("out/trans_mB_w_hat_excl.png", width: 50%)
-//   )
-// ]
+#figure(caption: [$hat(bold(R))$])[
+  #stack(
+    dir: ltr,
+    image("out/R_hat_prod_mB_exclude.png", width: 50%),
+    image("out/R_hat_trans_mB_exclude.png", width: 50%),
+  )
+]<fig:q-hat-exclude>
 
-// #figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
-//   #stack(
-//     dir: ltr,
-//     image("out/trans_mA_w_hat_fse.png", width: 50%),
-//     image("out/trans_mB_w_hat_fse.png", width: 50%)
-//   )
-// ]
+== Welfare
+```
+In progress.
+```
 
-// #figure(caption: [Commuting Cost Shock, $hat(bold(w))$])[
-//   #stack(
-//     dir: ltr,
-//     image("out/trans_mA_w_hat_core.png", width: 50%),
-//     image("out/trans_mB_w_hat_core.png", width: 50%)
-//   )
-// ]
+#bibliography(
+    (
+      "typst/ahlfeldt_ea_2015.bib",
+      "typst/monte_ea_2018.bib",
+      "typst/owens_ea_2020.bib",
+      "typst/redding_rossi-hansberg_2017.bib",
+      "typst/eaton_kortum_2002.bib",
+      "typst/train_2003.bib",
+    ),
+    style: "chicago-author-date"
+)
 
-// #figure(caption: [Local Productivity Shock, Simple QSM, $hat(bold(w))$])[
-//   #stack(
-//     dir: ltr,
-//     image("out/productivity_shock_w_hat.png", width: 50%),
-//     image("out/productivity_shock_w_hat_censor.png", width: 50%)
-//   )
-// ]
 
-// #figure(caption: [Local Productivity Shock, Simple QSM, $hat(bold(w))$])[
-//   #image("out/productivity_shock_w_hat_focus.png", width: 50%)
-// ]
+/*----------------------------------------------------------
+Move references with:
+cp ~/projects/references/ahlfeldt_ea_2015.bib ~/projects/qsm-chicago/typst
+cp ~/projects/references/monte_ea_2018.bib ~/projects/qsm-chicago/typst
+cp ~/projects/references/owens_ea_2020.bib ~/projects/qsm-chicago/typst
+cp ~/projects/references/redding_rossi-hansberg_2017.bib ~/projects/qsm-chicago/typst
+cp ~/projects/references/eaton_kortum_2002.bib ~/projects/qsm-chicago/typst
+cp ~/projects/references/train_2003.bib ~/projects/qsm-chicago/typst
+----------------------------------------------------------*/
