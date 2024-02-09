@@ -124,7 +124,7 @@ This section does not discuss the existence and uniqueness of the equilibrium. I
 === Welfare
 We can compute expected utility by considering indirect utility. Expected utility for an agent residing in location $i$ will be given by the expected utility in their most attractive workplace:
 $
-  EE[cal(U)_(i n^*_(i omega) omega)]
+  U_i eq.def EE[cal(U)_(i n^*_(i omega) omega)]
   = sum_n pi_(i n | i) EE[cal(U)_(i n omega) | n^*_(i omega) = n],
 $
 where we have used the law of iterated expectations. In order to compute this expectation, we need the distribution of $cal(U)_(i n omega)$ conditional on $n^*_(i omega) = n$. We derive this distribution below:
@@ -143,11 +143,11 @@ $
 $
 which is a Fréchet distribution with shape $theta$ and scale parameter $Phi_i^(1 / theta)$; this result is part of the Fréchet magic! We can then use the expression for the mean of a Fréchet distribution to compute the expected utility of an agent residing in location $i$:
 $
-  EE[cal(U)_(i n^*_(i omega) omega)]
+  U_i
   &= sum_n pi_(i n | i) EE[cal(U)_(i n omega) | n^*_(i omega) = n] \
   &= sum_n pi_(i n | i) [Gamma(1 - 1 / theta) Phi_i^(1 / theta)] \
   &= Gamma(1 - 1 / theta) Phi_i^(1 / theta).
-$
+$<mA-utility>
 These derivations are used widely across the literature and usually relegated to an appendix or omitted entirely. Researchers will appeal to the standard results from discrete choice, as the steps are usually similar or identical across models. I would encourage you to derive these results yourself once or twice before appealing to the standard results.#footnote[Are any of the steps above unclear? Please let me know and I can add more exposition.]
 
 === Counterfactual Equilibria
@@ -194,7 +194,12 @@ The substantive piece of this expression is $hat(Phi)_i$. We derive it below:
     )
     hat(phi)_(i k),
   $
-where we have used @eqn:commute-probability to substitute in for $pi_(i k | i)^(0)$ (see the portions colored #text(red)[red]). We now combine @eqn:exact-hat-clearing and @eqn:exact-hat-pi to obtain
+where we have used @eqn:commute-probability to substitute in for $pi_(i k | i)^(0)$ (see the portions colored #text(red)[red]). From @eqn:exact-hat-pi, we can then express the change in welfare
+  $
+    hat(U)_i = hat(Phi)_i^(1 / theta).
+  $
+
+We now combine @eqn:exact-hat-clearing and @eqn:exact-hat-pi to obtain
   $
     ((hat(A)_n) / hat(w)_n)^(1 / (1 - beta))
     &= [
@@ -309,6 +314,13 @@ We now use the unconditional commuting probability in @eqn:mB-pi to define the c
     L_n = sum_(i in cal(L)) pi_(i n) overline(R).
   $
 
+=== Welfare
+Given free residential mobility, utility is now equalized across space:
+$
+  U eq.def EE[cal(U)_({i n}^*_omega omega)] = Gamma(1 - 1 / theta) Phi^(1 / theta).
+$
+The derivation follows the same steps as in Model A.
+
 === Counterfactual Equilibria
 We proceed as in model A and derive the exact hat system.
   $
@@ -326,7 +338,9 @@ We proceed as in model A and derive the exact hat system.
     hat(overline(nu))_i hat(R)_i
     &= hat(overline(R)) ((sum_(n in cal(L)) pi_(i n)^0 w_n^0 hat(pi)_(i n) hat(w)_n) / (sum_(k in cal(L)) pi_(i k)^0 w_k^0)) \
     hat(q)_i
-    &= (hat(overline(nu))_i hat(R_i)) / hat(H)_i
+    &= (hat(overline(nu))_i hat(R_i)) / hat(H)_i \
+    hat(U)
+    &= hat(Phi)^(1 / theta).
   $<eqn:mB-hat-system>
 We combine the expressions from above and define
   $
@@ -461,9 +475,25 @@ I compare the equilibrium impact of two parameter shocks: a 5% increase in produ
 ]<fig:q-hat-exclude>
 
 == Welfare
-```
-In progress.
-```
+#figure(caption: [$hat(bold(U))$])[
+  #stack(
+    dir: ltr,
+    image("out/U_hat_prod_mA.png", width: 50%),
+    image("out/U_hat_trans_mA.png", width: 50%),
+  )
+]<fig:U-hat>
+
+#figure(caption: [$hat(bold(U))$])[
+  #stack(
+    dir: ltr,
+    image("out/U_hat_prod_mA_exclude.png", width: 50%),
+    image("out/U_hat_trans_mA_exclude.png", width: 50%),
+  )
+]<fig:U-hat-exclude>
+
+// Model B:
+// Productivity: 1.000783025244706
+// Transportation: 1.0018882902521573
 
 #bibliography(
     (

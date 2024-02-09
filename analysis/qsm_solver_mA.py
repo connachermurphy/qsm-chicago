@@ -67,6 +67,7 @@ def calc_L_hat_supply(theta, pi_init, w_hat, kappa_hat, R_hat, R_init, L_init):
 
     return L_hat_supply
 
+
 def calc_Z(w_tilde, theta, beta, pi_init, R_init, L_init, A_hat, kappa_hat, R_hat):
     """
     Calculate calligraphic Z for candidate wage changes
@@ -84,7 +85,9 @@ def calc_Z(w_tilde, theta, beta, pi_init, R_init, L_init, A_hat, kappa_hat, R_ha
 
     L_hat_demand = np.power(A_hat / w_tilde, 1 / (1 - beta))
 
-    L_hat_supply = calc_L_hat_supply(theta, pi_init, w_tilde, kappa_hat, R_hat, R_init, L_init)
+    L_hat_supply = calc_L_hat_supply(
+        theta, pi_init, w_tilde, kappa_hat, R_hat, R_init, L_init
+    )
 
     return L_hat_demand - L_hat_supply
 
@@ -112,14 +115,20 @@ def solve_counterfactual(
     return w_tilde
 
 
-def summarize_counterfactual(num_nbhd, neighborhoods_shp, w_hat, theta, pi_init, kappa_hat, R_hat, R_init, L_init):
+def summarize_counterfactual(
+    num_nbhd, neighborhoods_shp, w_hat, theta, pi_init, kappa_hat, R_hat, R_init, L_init
+):
     L_hat = calc_L_hat_supply(theta, pi_init, w_hat, kappa_hat, R_hat, R_init, L_init)
-
+    U_hat = np.power(calc_Phi_hat(theta, pi_init, w_hat, kappa_hat), 1 / theta)
     df_hat = pd.DataFrame(  # stack wage and productivity changes into a dataframe
         np.column_stack(
-            (w_hat.reshape((num_nbhd)), L_hat.reshape((num_nbhd)))
+            (
+                w_hat.reshape((num_nbhd)),
+                L_hat.reshape((num_nbhd)),
+                U_hat.reshape((num_nbhd)),
+            )
         ),
-        columns=["w_hat", "L_hat"],
+        columns=["w_hat", "L_hat", "U_hat"],
     )
 
     df_hat["id"] = df_hat.index + 1

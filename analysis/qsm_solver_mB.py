@@ -20,6 +20,20 @@ def calc_sub_phi_hat(theta, alpha, w_hat, q_hat, kappa_hat, B_hat):
     return sub_phi_hat
 
 
+def calc_Phi_hat(theta, alpha, pi_init, w_hat, q_hat, kappa_hat, B_hat):
+    """
+    Calculate Phi_hat
+    Arguments:
+
+    """
+
+    sub_phi_hat = calc_sub_phi_hat(theta, alpha, w_hat, q_hat, kappa_hat, B_hat)
+
+    Phi_hat = np.sum(pi_init * sub_phi_hat)
+
+    return Phi_hat
+
+
 def calc_pi_hat(theta, alpha, pi_init, w_hat, q_hat, kappa_hat, B_hat):
     """
     Calculate change in unconditional commuting probabilities
@@ -33,9 +47,9 @@ def calc_pi_hat(theta, alpha, pi_init, w_hat, q_hat, kappa_hat, B_hat):
         B_hat: bilateral amenity changes
     """
     sub_phi_hat = calc_sub_phi_hat(theta, alpha, w_hat, q_hat, kappa_hat, B_hat)
-    pi_hat = sub_phi_hat / np.sum(pi_init * sub_phi_hat)
+    Phi_hat = calc_Phi_hat(theta, alpha, pi_init, w_hat, q_hat, kappa_hat, B_hat)
 
-    return pi_hat
+    return sub_phi_hat / Phi_hat
 
 
 def calc_R_hat(
@@ -291,8 +305,23 @@ def solve_counterfactual(
     return w_tilde, q_tilde
 
 
-def summarize_counterfactual(num_nbhd, neighborhoods_shp, w_hat, q_hat, theta, alpha, pi_init, L_init, R_init, R_bar_init, kappa_hat, B_hat, R_bar_hat):
-    L_hat = calc_L_hat_supply(theta,
+def summarize_counterfactual(
+    num_nbhd,
+    neighborhoods_shp,
+    w_hat,
+    q_hat,
+    theta,
+    alpha,
+    pi_init,
+    L_init,
+    R_init,
+    R_bar_init,
+    kappa_hat,
+    B_hat,
+    R_bar_hat,
+):
+    L_hat = calc_L_hat_supply(
+        theta,
         alpha,
         pi_init,
         L_init,
@@ -304,13 +333,36 @@ def summarize_counterfactual(num_nbhd, neighborhoods_shp, w_hat, q_hat, theta, a
         R_bar_hat,
     )
 
-    R_hat = calc_R_hat(theta, alpha, pi_init, R_init, R_bar_init, w_hat, q_hat, kappa_hat, B_hat, R_bar_hat)
+    R_hat = calc_R_hat(
+        theta,
+        alpha,
+        pi_init,
+        R_init,
+        R_bar_init,
+        w_hat,
+        q_hat,
+        kappa_hat,
+        B_hat,
+        R_bar_hat,
+    )
+
+    U_hat = np.power(
+        calc_Phi_hat(theta, alpha, pi_init, w_hat, q_hat, kappa_hat, B_hat)
+        * np.ones(num_nbhd),
+        1 / theta,
+    )
 
     df_hat = pd.DataFrame(  # stack wage and productivity changes into df
         np.column_stack(
-            (w_hat.reshape((num_nbhd)), q_hat.reshape((num_nbhd)), L_hat.reshape((num_nbhd)), R_hat.reshape((num_nbhd)))
+            (
+                w_hat.reshape((num_nbhd)),
+                q_hat.reshape((num_nbhd)),
+                L_hat.reshape((num_nbhd)),
+                R_hat.reshape((num_nbhd)),
+                U_hat.reshape((num_nbhd)),
+            )
         ),
-        columns=["w_hat", "q_hat", "L_hat", "R_hat"],
+        columns=["w_hat", "q_hat", "L_hat", "R_hat", "U_hat"],
     )
 
     df_hat["id"] = df_hat.index + 1

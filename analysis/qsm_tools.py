@@ -41,7 +41,7 @@ def calibrate():
 
     # Extract wage index
     wages = np.array(
-        neighborhoods_pd.sort_values(by="id")["wrk_wage_index"].values
+        neighborhoods_pd.sort_values(by="id")["wrk_wage"].values
     ).reshape((1, num_nbhd))
 
     # Import Chicago neighborhoods shapefile
@@ -50,9 +50,9 @@ def calibrate():
     )
 
     # Parameter values
-    theta = 3.0
-    alpha = 0.6
-    beta = 0.6
+    theta = 6.83  # from Ahlfeldt et al. (2015)
+    alpha = 0.67  # non-housing share
+    beta = 0.6  # labor share
 
     return (
         pi,
@@ -92,8 +92,8 @@ def map(shp, var, vmin, vmax, title, filename):
 
 def compare_maps(shp_list, var, panel_titles, filenames):
     # Find bounds
-    vmin = min(shp["w_hat"].min() for shp in shp_list)
-    vmax = min(shp["w_hat"].max() for shp in shp_list)
+    vmin = min(shp[var].min() for shp in shp_list)
+    vmax = min(shp[var].max() for shp in shp_list)
 
     # Create maps
     for i in range(len(shp_list)):
