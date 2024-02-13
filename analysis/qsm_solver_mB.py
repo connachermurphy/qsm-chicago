@@ -24,9 +24,14 @@ def calc_Phi_hat(theta, alpha, pi_init, w_hat, q_hat, kappa_hat, B_hat):
     """
     Calculate Phi_hat
     Arguments:
-
+        theta: preference shock dispersion parameter
+        alpha: final good consumption share
+        pi_init: unconditional commuting probabilities
+        w_hat: wage changes
+        q_hat: rent changes
+        kappa_hat: commuting cost changes
+        B_hat: bilateral amenity changes
     """
-
     sub_phi_hat = calc_sub_phi_hat(theta, alpha, w_hat, q_hat, kappa_hat, B_hat)
 
     Phi_hat = np.sum(pi_init * sub_phi_hat)
@@ -204,12 +209,11 @@ def calc_Z(
         beta: elasticity of output with respect to labor
         pi_init: unconditional commuting probabilities
         L_init: workplace population
-        R_bar_init: initial population
+        R_bar_init: population
         A_hat: productivity changes
         kappa_hat: commuting cost changes
         H_hat: housing stock changes
     """
-
     L_hat_demand = np.power(A_hat / w_tilde, 1 / (1 - beta))
 
     L_hat_supply = calc_L_hat_supply(
@@ -250,9 +254,9 @@ def solve_counterfactual(
         theta: preference shock dispersion parameter
         alpha: final good consumption share
         beta: elasticity of output with respect to labor
-        pi_init: initial unconditional commuting probabilities
-        L_init: initial workplace population
-        R_bar_init: initial population
+        pi_init: unconditional commuting probabilities
+        L_init: workplace population
+        R_bar_init: population
         A_hat: productivity changes
         kappa_hat: commuting cost changes
         B_hat: bilateral amenity changes
@@ -320,6 +324,23 @@ def summarize_counterfactual(
     B_hat,
     R_bar_hat,
 ):
+    """
+    Summarize exact hat results of counterfactual simulation
+    Arguments:
+        num_nbhd: number of neighborhoods
+        neighborhoods_shp: geopandas dataframe of neighborhoods
+        w_hat: wage changes
+        q_hat: rent changes
+        theta: preference shock dispersion parameter
+        alpha: final good consumption share
+        pi_init: unconditional commuting probabilities
+        L_init: workplace population
+        R_init: residential population
+        R_bar_init: population
+        kappa_hat: commuting cost changes
+        B_hat: bilateral amenity changes
+        R_bar_hat: population change
+    """
     L_hat = calc_L_hat_supply(
         theta,
         alpha,
@@ -367,7 +388,7 @@ def summarize_counterfactual(
 
     df_hat["id"] = df_hat.index + 1
 
-    df_hat_shp = neighborhoods_shp.merge(  # merge with shapefile
+    df_hat_shp = neighborhoods_shp.merge(  # merge with geopandas df
         df_hat, on="id"
     )
 

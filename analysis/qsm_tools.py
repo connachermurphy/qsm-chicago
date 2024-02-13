@@ -40,9 +40,9 @@ def calibrate():
     )
 
     # Extract wage index
-    wages = np.array(
-        neighborhoods_pd.sort_values(by="id")["wrk_wage"].values
-    ).reshape((1, num_nbhd))
+    wages = np.array(neighborhoods_pd.sort_values(by="id")["wrk_wage"].values).reshape(
+        (1, num_nbhd)
+    )
 
     # Import Chicago neighborhoods shapefile
     neighborhoods_shp = gpd.read_file("../data/neighborhoods").merge(
@@ -72,6 +72,15 @@ def calibrate():
 
 
 def map(shp, var, vmin, vmax, title, filename):
+    """
+    Create a map of a variable
+        shp: geopandas dataframe
+        var: variable to map
+        vmin: minimum value for color scale
+        vmax: maximum value for color scale
+        title: panel title
+        filename: name of the output file
+    """
     shp.plot(
         column=var,
         legend=True,
@@ -91,6 +100,14 @@ def map(shp, var, vmin, vmax, title, filename):
 
 
 def compare_maps(shp_list, var, panel_titles, filenames):
+    """
+    Create a series of maps for comparison (with a common color scale)
+        shp_list: list of geopandas dataframes
+        var: variable to map
+        panel_titles: list of panel titles
+        filenames: list of output file names
+    """
+
     # Find bounds
     vmin = min(shp[var].min() for shp in shp_list)
     vmax = min(shp[var].max() for shp in shp_list)
